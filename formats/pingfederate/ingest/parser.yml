@@ -1,5 +1,5 @@
 name: PingFederate
-ignored_values: null
+ignored_values: []
 pipeline:
   - name: parsed_event
     external:
@@ -17,7 +17,7 @@ pipeline:
       properties:
         input_field: "{{parsed_event.message.log_timestamp}}"
         output_field: timestamp
-        format: yyyy-MM-dd HH:mm:ss,SSS
+        format: ISO8601
         timezone: UTC
 
   - name: set_event_common_fields
@@ -46,13 +46,11 @@ stages:
           log.level: "{{parsed_event.message.log_level}}"
           log.logger: "{{parsed_event.message.java_class}}"
           log.syslog.priority: "{{parsed_event.message.syslog_priority | int}}"
+          message: "{{parsed_event.message.log_message}}"
           
       - set:
           pingfederate.transaction_id: "{{parsed_event.message.transaction_id}}"
         filter: "{{parsed_event.message.transaction_id is defined}}"
-      
-      - set:
-          message: "{{parsed_event.message.log_message}}"
 
   set_ecs_categorization:
     actions:
@@ -72,17 +70,17 @@ stages:
       - set:
           event.category: [web]
           event.type: [info]
-        filter: "{{parsed_event.message.log_message | re_search('request ID|tracking')}}"
+        filter: "{{parsed_event.message.log_message | re_search('request ID|tracking|TrackingIdSupport')}}"
 
       # Locale/configuration events
       - set:
           event.category: [configuration]
           event.type: [info]
-        filter: "{{parsed_event.message.log_message | re_search('Locale|clientCert')}}"
+        filter: "{{parsed_event.message.log_message | re_search('Locale|clientCert|X509ClientCertExtractor')}}"
 
       # GET requests
       - set:
           event.category: [web]
           event.type: [access]
-          http.request.method: GET
+          http.request.method: "GET"
         filter: "{{parsed_event.message.log_message | re_search('^GET:')}}"
