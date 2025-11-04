@@ -1,0 +1,5 @@
+pingfederate.transaction_id:
+  description: Transaction ID associated with the PingFederate event
+  name: pingfederate.transaction_id
+  type: keyword
+  example: "PYCZ0O3dmfMksEM-HE0q_N07yPg"

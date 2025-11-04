@@ -1,0 +1,11 @@
+uuid: d21cf6f1-75fe-4a64-a2d5-2e700d131ba8
+name: Pingfederate
+slug: sekoiaio-pingfederate-format
+description: "PingFederate is an enterprise federation server that enables user authentication and single sign-on. It serves as a global authentication authority that allows customers, employees, and partners to securely access all the applications they need from any device."
+data_sources:
+  - System calls
+  - Process monitoring
+  - Process use of network
+  - File monitoring
+  - Authentication logs
+  - Network protocol analysis

@@ -1,0 +1,88 @@
+name: PingFederate
+ignored_values: null
+pipeline:
+  - name: parsed_event
+    external:
+      name: grok.match
+      properties:
+        input_field: "{{original.message}}"
+        output_field: message
+        pattern: >-
+          ^<%{NONNEGINT:syslog_priority}>%{SYSLOGTIMESTAMP:syslog_timestamp} %{HOSTNAME:hostname} %{TIMESTAMP_ISO8601:log_timestamp}(?:\s+tid:%{DATA:transaction_id})?\s+%{LOGLEVEL:log_level} \[%{DATA:java_class}\] %{GREEDYDATA:log_message}$
+        custom_patterns: {}
+
+  - name: parsed_date
+    external:
+      name: date.parse
+      properties:
+        input_field: "{{parsed_event.message.log_timestamp}}"
+        output_field: timestamp
+        format: yyyy-MM-dd HH:mm:ss,SSS
+        timezone: UTC
+
+  - name: set_event_common_fields
+  - name: set_host_fields
+  - name: set_log_fields
+  - name: set_ecs_categorization
+
+stages:
+  set_event_common_fields:
+    actions:
+      - set:
+          "@timestamp": "{{parsed_date.timestamp}}"
+          event.kind: event
+          event.module: pingfederate
+          event.dataset: pingfederate
+          event.severity: "{{parsed_event.message.syslog_priority | int}}"
+
+  set_host_fields:
+    actions:
+      - set:
+          host.name: "{{parsed_event.message.hostname}}"
+
+  set_log_fields:
+    actions:
+      - set:
+          log.level: "{{parsed_event.message.log_level}}"
+          log.logger: "{{parsed_event.message.java_class}}"
+          log.syslog.priority: "{{parsed_event.message.syslog_priority | int}}"
+          
+      - set:
+          pingfederate.transaction_id: "{{parsed_event.message.transaction_id}}"
+        filter: "{{parsed_event.message.transaction_id is defined}}"
+      
+      - set:
+          message: "{{parsed_event.message.log_message}}"
+
+  set_ecs_categorization:
+    actions:
+      # Heartbeat monitoring events
+      - set:
+          event.category: [web]
+          event.type: [access]
+        filter: "{{parsed_event.message.log_message | re_search('heartbeat\\.ping')}}"
+
+      # Cookie management events
+      - set:
+          event.category: [web]
+          event.type: [info]
+        filter: "{{parsed_event.message.log_message | re_search('cookie|Cookie')}}"
+
+      # Request tracking events
+      - set:
+          event.category: [web]
+          event.type: [info]
+        filter: "{{parsed_event.message.log_message | re_search('request ID|tracking')}}"
+
+      # Locale/configuration events
+      - set:
+          event.category: [configuration]
+          event.type: [info]
+        filter: "{{parsed_event.message.log_message | re_search('Locale|clientCert')}}"
+
+      # GET requests
+      - set:
+          event.category: [web]
+          event.type: [access]
+          http.request.method: GET
+        filter: "{{parsed_event.message.log_message | re_search('^GET:')}}"

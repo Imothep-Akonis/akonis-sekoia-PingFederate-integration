@@ -1,8 +1,9 @@
 [tool.poetry]
-name = "HTTP Automation Module"
+name = "pingfederate"
+version = "0.1"
 description = ""
-version = "0.0"
-authors = []
+authors = ["Akonis"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
@@ -10,7 +11,7 @@ sekoia-automation-sdk = "^1.13.0"
 requests = "*"
 tenacity = "^8.0.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "*"
 pytest-cov = "*"
 requests-mock = "*"
