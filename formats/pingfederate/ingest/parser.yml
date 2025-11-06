@@ -8,7 +8,7 @@ pipeline:
         input_field: "{{original.message}}"
         output_field: message
         pattern: >-
-          ^<%{NONNEGINT:syslog_priority}>%{SYSLOGTIMESTAMP:syslog_timestamp} %{HOSTNAME:hostname} %{TIMESTAMP_ISO8601:log_timestamp}(?:\s+tid:%{DATA:transaction_id})?\s+%{LOGLEVEL:log_level} \[%{DATA:java_class}\] %{GREEDYDATA:log_message}$
+          ^%{TIMESTAMP_ISO8601:log_timestamp}(?:\s+tid:%{DATA:transaction_id})?\s+%{LOGLEVEL:log_level} \[%{DATA:java_class}\] %{GREEDYDATA:log_message}$
         custom_patterns: {}
 
   - name: parsed_date
@@ -17,7 +17,6 @@ pipeline:
       properties:
         input_field: "{{parsed_event.message.log_timestamp}}"
         output_field: timestamp
-        format: ISO8601
         timezone: UTC
 
   - name: set_event_common_fields
