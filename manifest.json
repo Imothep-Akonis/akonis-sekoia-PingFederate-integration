@@ -6,9 +6,9 @@
     "properties": {}
   },
   "description": "Private App integration",
-  "name": "Auditd Root",
-  "uuid": "7e7b1eb3-5740-4829-b076-58286b169060",
-  "slug": "sekoia-auditd-integration",
-  "version": "0.1.1",
+  "name": "PingFederate Root",
+  "uuid": "faf26aa1-3984-4067-af22-7f96f1bfee9e",
+  "slug": "sekoia-pingfederate-integration",
+  "version": "0.1.0",
   "categories": []
 }
