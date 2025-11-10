@@ -3,5 +3,6 @@ name: Pingfederate
 slug: sekoiaio-pingfederate-format
 description: "PingFederate is an enterprise federation server that enables user authentication and single sign-on. It serves as a global authentication authority that allows customers, employees, and partners to securely access all the applications they need from any device."
 data_sources:
-  Authentication logs: audit logon events are examined in detail
-  Network protocol analysis: auditd provides information about the network activity
+  Authentication logs: authentication and SSO events including login attempts, session management, and federation transactions
+  Audit logs: administrative actions, configuration changes, and security-related events
+  Protocol logs: SAML, OAuth, OpenID Connect, and other federation protocol interactions
