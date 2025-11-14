@@ -18,7 +18,8 @@ pipeline:
       name: date.parse
       properties:
         input_field: "{{parsed_event.message.log_timestamp}}"
-        output_field: timestamp
+        output_field: app_timestamp
+        timezone: UTC
 
   # Parse HTTP access log timestamp
   - name: parsed_date_http
@@ -27,8 +28,8 @@ pipeline:
       name: date.parse
       properties:
         input_field: "{{parsed_event.message.timestamp}}"
-        output_field: timestamp
-        format: "dd/MMM/yyyy:HH:mm:ss Z"
+        output_field: http_timestamp
+        timezone: UTC
 
   # Parse key-value pairs from application logs
   - name: kv_parsed
@@ -52,7 +53,7 @@ stages:
   set_event_common_fields:
     actions:
       - set:
-          "@timestamp": "{{parsed_date_app.timestamp or parsed_date_http.timestamp}}"
+          "@timestamp": "{{parsed_date_app.app_timestamp or parsed_date_http.http_timestamp}}"
           event.kind: event
           event.module: pingfederate
           event.dataset: pingfederate
