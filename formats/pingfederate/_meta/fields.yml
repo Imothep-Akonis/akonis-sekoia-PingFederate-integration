@@ -1,5 +1,5 @@
 pingfederate.transaction_id:
-  description: Transaction ID associated with the PingFederate event
+  description: Transaction ID (tid) for tracking requests across PingFederate components
   name: pingfederate.transaction_id
   type: keyword
-  example: "PYCZ0O3dmfMksEM-HE0q_N07yPg"
+  example: "Q08PzbPCjfSJL8sbIj88OLO5YWg"
