@@ -9,7 +9,7 @@
     }
   },
   "expected": {
-    "message": "GET: https://hub-mtls.auth-int.hza.infra.xxxx/pf/heartbeat.ping",
+    "message": "2025-09-02 11:02:34,353 tid:Q08PzbPCjfSJL8sbIj88OLO5YWg DEBUG [org.sourceid.websso.servlet.IntegrationControllerServlet] GET: https://hub-mtls.auth-int.hza.infra.xxxx/pf/heartbeat.ping",
     "event": {
       "category": [
         "web"
@@ -32,6 +32,7 @@
       "logger": "org.sourceid.websso.servlet.IntegrationControllerServlet"
     },
     "pingfederate": {
+      "labels": "GET: https://hub-mtls.auth-int.hza.infra.xxxx/pf/heartbeat.ping",
       "transaction_id": "Q08PzbPCjfSJL8sbIj88OLO5YWg"
     }
   }

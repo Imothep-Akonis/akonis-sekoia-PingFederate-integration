@@ -84,7 +84,7 @@ stages:
         filter: "{{parsed_event.message.transaction_id is defined}}"
 
       - set:
-          message: "{{parsed_event.message.kv_pairs}}"
+          pingfederate.labels: "{{parsed_event.message.kv_pairs}}"
         filter: "{{parsed_event.message.kv_pairs is defined}}"
 
   set_http_fields:
