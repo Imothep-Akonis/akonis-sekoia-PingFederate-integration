@@ -15,12 +15,14 @@
         "web"
       ],
       "dataset": "pingfederate",
-      "id": "00000000-0000-0000-0000-000000000000",
       "kind": "event",
       "module": "pingfederate",
       "type": [
         "access"
       ]
+    },
+    "host": {
+      "name": "192.168.1.100"
     },
     "http": {
       "request": {

@@ -22,6 +22,9 @@
       ]
     },
     "@timestamp": "2025-09-02T11:02:34.353000Z",
+    "host": {
+      "name": "hub-mtls.auth-int.hza.infra.xxxx"
+    },
     "http": {
       "request": {
         "method": "GET"
@@ -34,6 +37,14 @@
     "pingfederate": {
       "labels": "GET: https://hub-mtls.auth-int.hza.infra.xxxx/pf/heartbeat.ping",
       "transaction_id": "Q08PzbPCjfSJL8sbIj88OLO5YWg"
+    },
+    "url": {
+      "domain": "hub-mtls.auth-int.hza.infra.xxxx",
+      "original": "https://hub-mtls.auth-int.hza.infra.xxxx/pf/heartbeat.ping",
+      "path": "/pf/heartbeat.ping",
+      "port": 443,
+      "scheme": "https",
+      "subdomain": "hub-mtls.auth-int.hza.infra"
     }
   }
 }
