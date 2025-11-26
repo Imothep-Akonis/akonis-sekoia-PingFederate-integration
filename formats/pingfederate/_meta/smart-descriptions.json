@@ -141,6 +141,9 @@
       },
       {
         "field": "log.logger"
+      },
+      {
+        "field": "pingfederate.transaction_id"
       }
     ],
     "relationships": [
@@ -148,6 +151,19 @@
         "source": "log.logger",
         "target": "pingfederate.transaction_id",
         "type": "assigned tracking ID"
+      }
+    ]
+  },
+  {
+    "value": "Request tracking: {log.logger} managing request tracking",
+    "conditions": [
+      {
+        "field": "event.type",
+        "value": "info"
+      },
+      {
+        "field": "log.logger",
+        "value": "org.sourceid.util.log.internal.TrackingIdSupport"
       }
     ]
   },

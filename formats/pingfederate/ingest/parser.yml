@@ -76,6 +76,16 @@ pipeline:
         output_field: cookie_parts
         pattern: "domain=\\.?(?<domain>[^;\\}\\s]+)"
 
+  # Extract request ID from tracking messages
+  - name: parsed_request_id
+    filter: "{{parsed_event.message.kv_pairs is defined and (parsed_event.message.kv_pairs | re_search('request ID:'))}}"
+    external:
+      name: grok.match
+      properties:
+        input_field: "{{parsed_event.message.kv_pairs}}"
+        output_field: tracking_parts
+        pattern: "request ID:\\s+(?<request_id>\\S+)"
+
   - name: set_event_common_fields
   - name: set_host_fields
   - name: set_log_fields
@@ -123,6 +133,11 @@ stages:
       - set:
           pingfederate.transaction_id: "{{parsed_event.message.transaction_id}}"
         filter: "{{parsed_event.message.transaction_id is defined}}"
+
+      # Extract request ID from tracking messages (use as transaction_id if tid is missing)
+      - set:
+          pingfederate.transaction_id: "{{parsed_request_id.tracking_parts.request_id}}"
+        filter: "{{parsed_request_id.tracking_parts.request_id is defined and pingfederate.transaction_id is not defined}}"
 
       - set:
           pingfederate.labels: "{{parsed_event.message.kv_pairs}}"
